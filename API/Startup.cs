@@ -32,6 +32,14 @@ namespace API
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            //add CORS cho phép truy cập từ nhiều domain khác
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
             services.AddControllers();
         }
 
@@ -45,14 +53,18 @@ namespace API
 
             //app.UseHttpsRedirection();
 
+            //do add bên service nên add thêm ở đây gọi là middleware
+            app.UseCors("CorsPolicy");
+
             app.UseRouting();
-
-            app.UseAuthorization();
-
+         
+            //routing và author phải trước endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.UseAuthorization();
         }
     }
 }
