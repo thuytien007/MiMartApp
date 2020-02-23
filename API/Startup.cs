@@ -1,18 +1,12 @@
-using System;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MediatR;
+using Application.Activities;
 
 namespace API
 {
@@ -40,6 +34,8 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
+            //chúng ta có nhiều Handler, nhưng nhờ MediatR add 1 lần trong service
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddControllers();
         }
 
@@ -58,7 +54,7 @@ namespace API
 
             app.UseRouting();
          
-            //routing và author phải trước endpoint
+            //routing phải trước endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
