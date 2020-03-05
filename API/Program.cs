@@ -5,14 +5,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
-
+using Microsoft.AspNetCore.Identity;
+using Domain;
 
 namespace API
 {
     public class Program
     {
         public static void Main(string[] args)
-        {
+        { 
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
@@ -20,9 +21,9 @@ namespace API
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
-
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    Seed.SeedData(context, userManager).Wait();
                 }
                 catch (Exception ex)
                 {
@@ -35,7 +36,7 @@ namespace API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureWebHostDefaults(webBuilder =>                                                                                                           
                 {
                     webBuilder.UseStartup<Startup>();
                 });

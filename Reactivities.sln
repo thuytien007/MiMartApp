@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{2EF9FB06-79B4-4B0E-AD17-692443A65E8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{BAA3AB8F-9ED7-47F8-B87E-B330D3E1DD94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{890AE9AC-914A-478A-975B-F790966C1A28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,17 @@ Global
 		{BAA3AB8F-9ED7-47F8-B87E-B330D3E1DD94}.Release|x64.Build.0 = Release|Any CPU
 		{BAA3AB8F-9ED7-47F8-B87E-B330D3E1DD94}.Release|x86.ActiveCfg = Release|Any CPU
 		{BAA3AB8F-9ED7-47F8-B87E-B330D3E1DD94}.Release|x86.Build.0 = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|x64.Build.0 = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Debug|x86.Build.0 = Debug|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|x64.ActiveCfg = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|x64.Build.0 = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|x86.ActiveCfg = Release|Any CPU
+		{890AE9AC-914A-478A-975B-F790966C1A28}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
-

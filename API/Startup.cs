@@ -7,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
 using Application.Activities;
+using Domain;
+using Microsoft.AspNetCore.Identity;
+using API.Middleware;
+using Application.Interfaces;
+using Infrastructure.Security;
 
 namespace API
 {
@@ -24,7 +29,8 @@ namespace API
         {
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                //opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             //add CORS cho phép truy cập từ nhiều domain khác
             services.AddCors(opt =>
@@ -37,14 +43,23 @@ namespace API
             //chúng ta có nhiều Handler, nhưng nhờ MediatR add 1 lần trong service
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddControllers();
+
+            var builder = services.AddIdentityCore<AppUser>();
+            var indentityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            indentityBuilder.AddEntityFrameworkStores<DataContext>();
+            indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            //services.AddAuthentication();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
             //app.UseHttpsRedirection();
@@ -53,14 +68,13 @@ namespace API
             app.UseCors("CorsPolicy");
 
             app.UseRouting();
+            app.UseAuthorization();
          
             //routing phải trước endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.UseAuthorization();
+            });          
         }
     }
 }
