@@ -1,0 +1,42 @@
+using System.Threading;
+using System.Threading.Tasks;
+using Application.Interfaces;
+using Domain;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Persistence;
+
+namespace Application.User
+{
+    public class CurrentUser
+    {
+        public class Query : IRequest<User> { }
+        //Handler object xử lý tất cả các bussiness logic
+        public class Handler : IRequestHandler<Query, User>
+        {
+            private readonly UserManager<AppUser> _userManager;
+            private readonly IJwtGenerator _jwtGenerator;
+            private readonly IUserAccessor _userAccessor;
+
+            public Handler(UserManager<AppUser> userManager, IJwtGenerator jwtGenerator, IUserAccessor userAccessor)
+            {
+                _userAccessor = userAccessor;
+                _jwtGenerator = jwtGenerator;
+                _userManager = userManager;
+            }
+
+            public async Task<User> Handle(Query request, CancellationToken cancellationToken)
+            {
+                //handler logic
+                var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUsername());
+                return new User{
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName,
+                    Token = _jwtGenerator.CreateToken(user),
+                    Image = null
+                };
+                //xong qua usercontroller them pthuc get
+            }
+        }
+    }
+}

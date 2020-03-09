@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -18,6 +19,8 @@ namespace API.Controllers
         }
         // lấy theo Id 
         [HttpGet("{id}")]
+        //thêm Authorize ở đây có nghĩ pthuc get theo id này k dc phép truy cập
+        [Authorize]
         public async Task<ActionResult<Activity>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id = id});
