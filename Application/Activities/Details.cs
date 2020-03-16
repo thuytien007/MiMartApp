@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities
@@ -26,6 +27,11 @@ namespace Application.Activities
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
+                //đây là kiểu Eager Load
+                //.Include(x =>x.UserActivities)
+                //.ThenInclude(x =>x.AppUser)
+                //.SingleOrDefaultAsync(x =>x.Id == request.Id);
+
                 if (activity == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound, new{activity = "Not Found"});

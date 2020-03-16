@@ -35,7 +35,7 @@ namespace Application.User
                     Token = _jwtGenerator.CreateToken(user),
                     Image = null
                 };
-                //xong qua usercontroller them pthuc get
+                //xong qua usercontroller them p.thuc get
             }
         }
     }

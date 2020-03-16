@@ -23,7 +23,7 @@ namespace Infrastructure.Security
             var claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
             };
-            //generate siging credentials
+            //generate signing credentials
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor{

@@ -90,6 +90,7 @@ namespace API
             //do add bên service nên add thêm ở đây gọi là middleware
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
+            //xác thực trước rồi mới phân quyền
             app.UseAuthorization();
          
             //routing phải trước endpoint

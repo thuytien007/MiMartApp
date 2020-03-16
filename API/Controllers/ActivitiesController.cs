@@ -9,12 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     //CQRS là một pattern cho việc xử lý CRUD dữ liệu, viết tắt của từ Command Query Responsibility Segregation
     public class ActivitiesController : BaseController
     {
          //lấy hết những gì có trong bảng Activity
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>>List(){
+        public async Task<ActionResult<List<Activity>>> List(){
             return await Mediator.Send(new List.Query());
         }
         // lấy theo Id 
