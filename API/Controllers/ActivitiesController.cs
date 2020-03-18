@@ -21,7 +21,7 @@ namespace API.Controllers
         // lấy theo Id 
         [HttpGet("{id}")]
         //thêm Authorize ở đây có nghĩ pthuc get theo id này k dc phép truy cập
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<Activity>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id = id});

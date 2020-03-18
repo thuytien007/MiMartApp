@@ -31,13 +31,13 @@ const ActivityDetails: React.FC<IProps> = ({
         <Button.Group widths={2}>
           <Button
             onClick={() => setEditMode(true)}
-            base
+            basic
             color="blue"
             content="Edit"
           />
           <Button
             onClick={() => setSelectedActivity(null)}
-            base
+            basic
             color="grey"
             content="Cancle"
           />
