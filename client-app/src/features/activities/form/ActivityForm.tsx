@@ -1,42 +1,49 @@
-import React, { useState, FormEvent, useContext } from "react";
+import React, { useState, FormEvent, useContext, useEffect } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
 import { v4 as uuid } from "uuid";
 import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
+import { RouteComponentProps } from "react-router-dom";
 
-interface IProps {
-  setEditMode: (editMode: boolean) => void;
-  activity: IActivity;
-  editActivity: (activity: IActivity) => void;
-  submitting: boolean;
+interface DetailParams {
+  id: string;
 }
 
-export const ActivityForm: React.FC<IProps> = ({
-  setEditMode,
-  activity: initialFormState,
-  editActivity,
-  submitting
+export const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
+  match, history
 }) => {
   const activityStore = useContext(ActivityStore);
-  const {createActivity} = activityStore;
-  const initializationForm = () => {
-    if (initialFormState) {
-      return initialFormState;
-    } else {
-      return {
-        id: "",
-        title: "",
-        category: "",
-        description: "",
-        date: "",
-        city: "",
-        venue: ""
-      };
-    }
-  };
+  const {
+    createActivity,
+    editActivity,
+    submitting,
+    activity: initialFormState,
+    loadActivity,
+    clearActivity
+  } = activityStore;
 
-  const [activity, setActivity] = useState<IActivity>(initializationForm);
+  const [activity, setActivity] = useState<IActivity>({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+    date: "",
+    city: "",
+    venue: ""
+  });
+
+  useEffect(() => {
+    if (match.params.id && activity.id.length === 0) {
+      //dòng này dùng để khi đang đứng ở edit khi load lại trang nó cũng k mất đi
+      loadActivity(match.params.id).then(
+        () => initialFormState && setActivity(initialFormState)
+      );
+    }
+    return () => {
+      clearActivity();
+    };
+  }, [loadActivity, match.params.id, clearActivity, initialFormState, activity.id.length]);
 
   //hàm xử lý khi nhấn nút submit
   const handleSubmit = () => {
@@ -46,9 +53,9 @@ export const ActivityForm: React.FC<IProps> = ({
         ...activity,
         id: uuid()
       };
-      createActivity(newActivity);
+      createActivity(newActivity).then(() => history.push(`/activities/${newActivity.id}`));
     } else {
-      editActivity(activity);
+      editActivity(activity).then(() => history.push(`/activities/${activity.id}`));
     }
   };
   //hàm này dùng để gõ chữ đc vào trong các form
@@ -108,7 +115,7 @@ export const ActivityForm: React.FC<IProps> = ({
           content="Submit"
         />
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={() =>history.push('/activities')}
           floated="right"
           type="button"
           content="Cancel"

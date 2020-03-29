@@ -1,56 +1,26 @@
-import React, { SyntheticEvent, useContext } from "react";
-import { Grid} from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import React, { useContext, useEffect } from "react";
+import { Grid } from "semantic-ui-react";
 import ActivityList from "./ActivityList";
-import ActivityDetails from "../details/ActivityDetails";
-import ActivityForm from "../form/ActivityForm";
 import { observer } from "mobx-react-lite";
-import ActivityStore from "../../../app/stores/activityStore";
+import ActivityStore from '../../../app/stores/activityStore';
+import { LoadingComponent } from "../../../app/layout/LoadingComponent";
 
-interface IProps {
-  setEditMode: (editMode: boolean) => void;
-  setSelectedActivity: (activity: IActivity | null) => void;
-  editActivity: (activity: IActivity) => void;
-  deleteActivity: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
-  submitting: boolean;
-  target: string;
-}
-const ActivityDashboard: React.FC<IProps> = ({
-  setEditMode,
-  setSelectedActivity,
-  editActivity,
-  deleteActivity,
-  submitting,
-  target
-}) => {
+const ActivityDashboard: React.FC = () => {
   const activityStore = useContext(ActivityStore);
-  const {editMode, selectedActivity} = activityStore;
+
+  useEffect(() => {
+    activityStore.loadActivities();
+  }, [activityStore]);
+
+  if(activityStore.loadingInitial)
+    return <LoadingComponent content='Loading activities...'/>
   return (
     <Grid>
       <Grid.Column width={10}>
-        <ActivityList
-          deleteActivity={deleteActivity}
-          submitting={submitting}
-          target={target}
-        />
+        <ActivityList />
       </Grid.Column>
       <Grid.Column width={6}>
-        {selectedActivity && !editMode && (
-          <ActivityDetails
-            setEditMode={setEditMode}
-            setSelectedActivity={setSelectedActivity}
-          />
-        )}
-        {editMode && (
-          <ActivityForm
-            //dòng này dùng để khi click edit rồi click lại create k bị dính dl còn của edit
-            key={(selectedActivity && selectedActivity.id) || 0}
-            setEditMode={setEditMode}
-            activity={selectedActivity!}
-            editActivity={editActivity}
-            submitting={submitting}
-          />
-        )}
+        <h2>Activity filters</h2>
       </Grid.Column>
     </Grid>
   );
