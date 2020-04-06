@@ -17,6 +17,7 @@ namespace Application.User
 {
     public class Register
     {
+        //sau khi đky trả về 1 object
         public class Command : IRequest<User>
         {
             public string DisplayName { get; set; }
@@ -29,6 +30,7 @@ namespace Application.User
             public CommandValidator()
             {
                 RuleFor(x => x.DisplayName).NotEmpty();
+                //username này mà có khoảng trắng là lỗi server, có thời gian sửa sau
                 RuleFor(x => x.UserName).NotEmpty();
                 //hàm validator EmailAddress dc cho sẵn, dựa vào đó viết 
                 //tiếp hàm Password trong folder Validators của Application
@@ -68,7 +70,7 @@ namespace Application.User
                     UserName = request.UserName
                 };
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
                     return new User

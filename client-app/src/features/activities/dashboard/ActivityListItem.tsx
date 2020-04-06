@@ -1,14 +1,11 @@
-import React, { useContext } from "react";
-import { Item, Button, Label, Segment, Icon } from "semantic-ui-react";
+import React from "react";
+import { Item, Button, Segment, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import ActivityStore from "../../../app/stores/activityStore";
 import { IActivity } from "../../../app/models/activity";
 
 export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
   activity
 }) => {
-  const activityStore = useContext(ActivityStore);
-  const { deleteActivity, submitting, target } = activityStore;
   return (
     <Segment.Group>
       <Segment>

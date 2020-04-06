@@ -1,11 +1,14 @@
-import { observable, action, computed, runInAction, configure } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { observable, action, computed, runInAction} from "mobx";
+import { SyntheticEvent } from "react";
 import { IActivity } from "../models/activity";
 import agent from "../api/agent";
+import { RootStore } from "./rootStore";
 
-configure({ enforceActions: "always" });
-
-class ActivityStore {
+export default class ActivityStore {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore){
+    this.rootStore = rootStore;
+  }
   //observable là biến
   //dùng Map() để gtrị khi t.đổi thì những biến l.quan đến nó đều t.đổi theo
   @observable activityRegistry = new Map();
@@ -136,4 +139,3 @@ class ActivityStore {
   };
 }
 
-export default createContext(new ActivityStore());

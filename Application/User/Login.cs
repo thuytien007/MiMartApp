@@ -61,7 +61,6 @@ namespace Application.User
                         Token = _jwtGenerator.CreateToken(user),
                         UserName = user.UserName,
                         Image = null
-
                     };
                 }
                 else

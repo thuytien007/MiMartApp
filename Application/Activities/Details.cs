@@ -36,7 +36,6 @@ namespace Application.Activities
                 {
                     throw new RestException(HttpStatusCode.NotFound, new{activity = "Not Found"});
                 }
-                
                  return activity;      
             }
         }

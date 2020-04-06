@@ -20,13 +20,16 @@ namespace Infrastructure.Security
 
         public string CreateToken(AppUser user)
         {
-            var claims = new List<Claim>{
+            var claims = new List<Claim>
+            {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
             };
-            //generate signing credentials
+
+            // generate signing credentials
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds
@@ -35,6 +38,7 @@ namespace Infrastructure.Security
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
             return tokenHandler.WriteToken(token);
         }
     }

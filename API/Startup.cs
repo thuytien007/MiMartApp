@@ -57,6 +57,7 @@ namespace API
                 });
 
             var builder = services.AddIdentityCore<AppUser>();
+            //var builder = services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>();
             var indentityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             indentityBuilder.AddEntityFrameworkStores<DataContext>();
             indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
