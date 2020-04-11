@@ -1,24 +1,24 @@
-import React, { Fragment } from "react";
-import { Segment, Header, Form, Button, Comment } from "semantic-ui-react";
+import React, { Fragment } from 'react';
+import { Segment, Header, Form, Button, Comment } from 'semantic-ui-react';
 
 const ActivityDetailedChat = () => {
   return (
     <Fragment>
       <Segment
-        textAlign="center"
-        attached="top"
+        textAlign='center'
+        attached='top'
         inverted
-        color="teal"
-        style={{ border: "none" }}
+        color='teal'
+        style={{ border: 'none' }}
       >
         <Header>Chat about this event</Header>
       </Segment>
       <Segment attached>
         <Comment.Group>
           <Comment>
-            <Comment.Avatar src="/assets/user.png" />
+            <Comment.Avatar src='/assets/user.png' />
             <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
+              <Comment.Author as='a'>Matt</Comment.Author>
               <Comment.Metadata>
                 <div>Today at 5:42PM</div>
               </Comment.Metadata>
@@ -30,9 +30,9 @@ const ActivityDetailedChat = () => {
           </Comment>
 
           <Comment>
-            <Comment.Avatar src="/assets/user.png" />
+            <Comment.Avatar src='/assets/user.png' />
             <Comment.Content>
-              <Comment.Author as="a">Joe Henderson</Comment.Author>
+              <Comment.Author as='a'>Joe Henderson</Comment.Author>
               <Comment.Metadata>
                 <div>5 days ago</div>
               </Comment.Metadata>
@@ -46,9 +46,9 @@ const ActivityDetailedChat = () => {
           <Form reply>
             <Form.TextArea />
             <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
+              content='Add Reply'
+              labelPosition='left'
+              icon='edit'
               primary
             />
           </Form>

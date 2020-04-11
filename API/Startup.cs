@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using FluentValidation.AspNetCore;
+using AutoMapper;
 
 namespace API
 {
@@ -35,6 +36,7 @@ namespace API
         {
             services.AddDbContext<DataContext>(opt =>
             {
+                opt.UseLazyLoadingProxies();
                 //opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -48,6 +50,7 @@ namespace API
             });
             //chúng ta có nhiều Handler, nhưng nhờ MediatR add 1 lần trong service
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddAutoMapper(typeof(List.Handler));
             services.AddControllers(opt =>{
                 var policy =  new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
@@ -61,6 +64,13 @@ namespace API
             var indentityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             indentityBuilder.AddEntityFrameworkStores<DataContext>();
             indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            services.AddAuthorization(opt =>{
+                opt.AddPolicy("IsActivityHost", policy =>{
+                    policy.Requirements.Add(new IsHostRequirement()); 
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
