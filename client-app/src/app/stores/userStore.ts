@@ -19,9 +19,11 @@ export default class UserStore {
   @action login = async (values: IUserFormValues) => {
     try {
       const user = await agent.User.login(values);
+      console.log(user);
       runInAction(() => {
         this.user = user;
       });
+    
       this.rootStore.commonStore.setToken(user.token);
       this.rootStore.modalStore.closeModal();
       history.push('/activities');
