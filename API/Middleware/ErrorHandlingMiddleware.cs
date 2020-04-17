@@ -45,7 +45,9 @@ namespace API.Middleware
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
+
             context.Response.ContentType = "application/json";
+            
             if (errors != null)
             {
                 var result = JsonSerializer.Serialize(new
