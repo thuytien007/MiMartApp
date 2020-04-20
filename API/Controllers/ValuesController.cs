@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Persistence;
 using Domain;
@@ -6,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatingApp.API.Controllers
+//lớp Value này viết cho việc k cần dùng đến Mediator và handler trong Application
+
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
