@@ -23,7 +23,8 @@ namespace API.Controllers
         //[AllowAnonymous]
         //thêm Authorize ở đây có nghĩ pthuc get theo id này k dc phép truy cập
         //phải là authorize và có token mới vô dc
-        [Authorize]
+        [AllowAnonymous]
+        //[Authorize]
         public async Task<ActionResult<ActivityDto>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query { Id = id });

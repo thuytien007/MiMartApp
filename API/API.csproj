@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <UserSecretsId>0f885b03-0bde-4373-bad7-65a113596cb1</UserSecretsId>
+    <UserSecretsId>dccb9f40-8178-4f0e-9478-6484b0e3e59e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />

@@ -47,7 +47,7 @@ namespace API
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:19002");
                 });
             });
             //chúng ta có nhiều Handler, nhưng nhờ MediatR add 1 lần trong service
