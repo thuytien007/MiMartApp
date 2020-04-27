@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -9,7 +8,6 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Persistence;
 
 namespace Application.User
 {
@@ -43,8 +41,6 @@ namespace Application.User
                 _userManager = userManager;
             }
 
-            public UserManager<AppUser> UserManager { get; }
-
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
@@ -52,6 +48,7 @@ namespace Application.User
                 {
                     throw new RestException(HttpStatusCode.Unauthorized);
                 }
+                //false cuối cùng là để hỏi có checkout ra khi login bị sai k???
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
                 if (result.Succeeded)
                 {

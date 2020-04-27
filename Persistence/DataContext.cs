@@ -15,6 +15,7 @@ namespace Persistence
         public DbSet<Photo> Photos {get; set;}
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //câu lệnh này để khi chạy migrations lên sẽ tạo cho AppUser 1 khóa chính
             base.OnModelCreating(builder);
             builder.Entity<Value>()
                 .HasData(
@@ -28,14 +29,15 @@ namespace Persistence
             builder.Entity<UserActivity>(x => x.HasKey(ua =>
                 new {ua.AppUserId, ua.ActivityId}));
 
+            //chổ này gọi là define relationshops
             builder.Entity<UserActivity>()
-                .HasOne(u => u.AppUser)//có nhiều AppUser
-                .WithMany(a => a.UserActivities)//1 Activity
+                .HasOne(u => u.AppUser)//1 user
+                .WithMany(a => a.UserActivities)//có nhiều useractivity
                 .HasForeignKey(u => u.AppUserId);//thông qua AppUserId
 
             builder.Entity<UserActivity>()
-                .HasOne(a => a.Activity)
-                .WithMany(u => u.UserActivities)
+                .HasOne(a => a.Activity) //1 activity
+                .WithMany(u => u.UserActivities)//có nhiều useractivity
                 .HasForeignKey(a => a.ActivityId);
         }
     }

@@ -11,9 +11,7 @@ namespace Domain
         public virtual Activity Activity { get; set; }
         public DateTime DateJoined { get; set; }
         public bool IsHost { get; set; }  
-        //trong UserActivity có tham chiếu đến bảng AppUser và bảng Activity
-        //nên ở 2 lớp kia sẽ có ICollection của UserActivity đến (quan hệ n-n)
-        //UserActivity lúc này là do qhe n-n sinh ra
-        //thêm bên DbContext DbSet dòng ICollection tương tự
+        //bảng UserActivity có tham chiếu đến bảng AppUser và bảng Activity
+        //nên 2 bảng đó sẽ có ICollection
     }
 }

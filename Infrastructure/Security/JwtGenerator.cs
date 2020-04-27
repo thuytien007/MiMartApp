@@ -22,10 +22,11 @@ namespace Infrastructure.Security
         {
             var claims = new List<Claim>
             {
+                //đăng ký token với username làm khóa
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
             };
 
-            // generate signing credentials
+            // credential cho phép server xác nhận token mà k cần query db
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor

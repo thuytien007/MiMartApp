@@ -32,8 +32,8 @@ namespace Application.User
                 RuleFor(x => x.DisplayName).NotEmpty();
                 //username này mà có khoảng trắng là lỗi server, có thời gian sửa sau
                 RuleFor(x => x.UserName).NotEmpty();
-                //hàm validator EmailAddress dc cho sẵn, dựa vào đó viết 
-                //tiếp hàm Password trong folder Validators của Application
+                //hàm validator EmailAddress dc cho sẵn
+                //hàm Password trong folder Validators của Application
                 RuleFor(x => x.Email).EmailAddress();
                 RuleFor(x => x.Password).Password();
             }
@@ -63,6 +63,7 @@ namespace Application.User
                     throw new RestException(HttpStatusCode.BadRequest, new { UserName = "Username is already exists" });
                 }
                 //nếu thỏa 2 đk trên thì tạo tài khoản mới cho user
+                //câu lệnh này dùng để lưu 1 user mới vào bảng ASPNetUsers trong db
                 var user = new AppUser
                 {
                     DisplayName = request.DisplayName,
@@ -70,6 +71,7 @@ namespace Application.User
                     UserName = request.UserName
                 };
 
+                //câu này có nghĩa là lưu password xuống db với user đã có
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {

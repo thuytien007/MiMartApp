@@ -10,7 +10,8 @@ namespace API.Controllers
     public class BaseController : ControllerBase
     {
         private IMediator _mediator;
-        //GetService là của thư viện Extension.Extensions.DependencyInjection, nó k tự import dc mà gõ tay
+        //GetService là của thư viện Microsoft.Extensions.DependencyInjection, nó k tự import dc mà gõ tay
+        //Nếu vế bên trái null thì lấy gtri vế bên phải gán vào cho biết Mediator.
         protected IMediator Mediator => _mediator ?? (_mediator = HttpContext.RequestServices.GetService<IMediator>());
     }
 }

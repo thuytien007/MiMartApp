@@ -11,16 +11,18 @@ namespace Application.Activities
 {
     public class Edit
     {
-         public class Command : IRequest{
+        public class Command : IRequest
+        {
             public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string Category { get; set; }
+            //do kiểu datetime k dc null mặc định là z, nên phải để ?
             public DateTime? Date { get; set; }
             public string City { get; set; }
             public string Venue { get; set; }
-         }
-         public class CommandValidator : AbstractValidator<Command>
+        }
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
@@ -46,9 +48,9 @@ namespace Application.Activities
                 var activity = await _context.Activities.FindAsync(request.Id);
                 if (activity == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new{activity = "Not Found"});
+                    throw new RestException(HttpStatusCode.NotFound, new { activity = "Not Found" });
                 }
-                //câu này (??) có nghĩa user có thể update 1 thuộc tính hoặc update tất cả 
+                //câu này (??) có nghĩa nếu vế bên trái ?? null thì nó sẽ lấy vế bên phải
                 activity.Title = request.Title ?? activity.Title;
                 activity.Description = request.Description ?? activity.Description;
                 activity.Category = request.Category ?? activity.Category;
@@ -56,8 +58,8 @@ namespace Application.Activities
                 activity.City = request.City ?? activity.City;
                 activity.Venue = request.Venue ?? activity.Venue;
                 var success = await _context.SaveChangesAsync() > 0;
-                
-                if (success) 
+
+                if (success)
                     return Unit.Value;
                 throw new Exception("Problem saving changes");
             }

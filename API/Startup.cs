@@ -21,6 +21,7 @@ using FluentValidation.AspNetCore;
 using AutoMapper;
 using Infrastructure.Photos;
 using Application.Photos;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -42,7 +43,7 @@ namespace API
                 //opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            //add CORS cho phép truy cập từ nhiều domain khác
+            //add CORS cho phép truy cập từ nhiều domain khác, bên ReactJS
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -53,31 +54,37 @@ namespace API
             //chúng ta có nhiều Handler, nhưng nhờ MediatR add 1 lần trong service
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(List.Handler));
-            services.AddControllers(opt =>{
-                var policy =  new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            services.AddControllers(opt =>
+            {
+                //2 dòng này dùng để tất cả các request đến api đều là authorized,
+                //từ đó controller nào đc để chữ [AllowAnonymous] thì mới đc truy cập
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
-            })
-                .AddFluentValidation(cfg =>{
-                    cfg.RegisterValidatorsFromAssemblyContaining<Create>();
-                });
+            }).AddFluentValidation(cfg =>
+            {
+                cfg.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
 
             var builder = services.AddIdentityCore<AppUser>();
-            //var builder = services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>();
             var indentityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             indentityBuilder.AddEntityFrameworkStores<DataContext>();
             indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
-            services.AddAuthorization(opt =>{
-                opt.AddPolicy("IsActivityHost", policy =>{
-                    policy.Requirements.Add(new IsHostRequirement()); 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirement());
                 });
             });
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt =>{
-                    opt.TokenValidationParameters = new TokenValidationParameters{
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
                         ValidateAudience = false,
@@ -88,6 +95,13 @@ namespace API
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tien's API Docs", Version = "v1" });
+                //dòng này dùng để nếu 2 class có cùng namespace nó k bị lỗi schemeId
+                options.CustomSchemaIds(x => x.FullName);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,6 +114,15 @@ namespace API
             }
 
             //app.UseHttpsRedirection();
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
             //do add bên service nên add thêm ở đây gọi là middleware
@@ -107,12 +130,12 @@ namespace API
             app.UseAuthentication();
             //xác thực trước rồi mới phân quyền
             app.UseAuthorization();
-         
+
             //routing phải trước endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });          
+            });
         }
     }
 }
