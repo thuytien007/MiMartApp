@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
-using Application.Activities;
+using Application.Articles;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 using API.Middleware;
@@ -68,7 +68,7 @@ namespace API
             indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthorization(opt =>{
-                opt.AddPolicy("IsActivityHost", policy =>{
+                opt.AddPolicy("IsArticleHost", policy =>{
                     policy.Requirements.Add(new IsHostRequirement()); 
                 });
             });

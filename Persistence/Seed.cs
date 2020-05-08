@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Persistence
 {
@@ -21,21 +22,24 @@ namespace Persistence
                         Id = "a",
                         DisplayName = "Bob",
                         UserName = "bob",
-                        Email = "bob@test.com"
+                        Email = "bob@test.com",
+                        Avatar = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1586959500/bu0ri90mobbkonaxblk5.jpg"
                     },
                     new AppUser
                     {
                         Id = "b",
                         DisplayName = "Jane",
                         UserName = "jane",
-                        Email = "jane@test.com"
+                        Email = "jane@test.com",
+                        Avatar = ""
                     },
                     new AppUser
                     {
                         Id = "c",
                         DisplayName = "Tom",
                         UserName = "tom",
-                        Email = "tom@test.com"
+                        Email = "tom@test.com",
+                        Avatar = ""
                     },
                 };
 
@@ -44,242 +48,59 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
-
-            if (!context.Activities.Any())
+            if (!context.Roles.Any())
             {
-                var activities = new List<Activity>
-                {
-                    new Activity
-                    {
-                        Title = "Past Activity 1",
-                        Date = DateTime.Now.AddMonths(-2),
-                        Description = "Activity 2 months ago",
-                        Category = "Drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(-2)
-                            }
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Past Activity 2",
-                        Date = DateTime.Now.AddMonths(-1),
-                        Description = "Activity 1 month ago",
-                        Category = "Culture",
-                        City = "Paris",
-                        Venue = "The Louvre",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(-1)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(-1)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 1",
-                        Date = DateTime.Now.AddMonths(1),
-                        Description = "Activity 1 month in future",
-                        Category = "Music",
-                        City = "London",
-                        Venue = "Wembly Stadium",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(1)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(1)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 2",
-                        Date = DateTime.Now.AddMonths(2),
-                        Description = "Activity 2 months in future",
-                        Category = "Food",
-                        City = "London",
-                        Venue = "Jamies Italian",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(2)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(2)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 3",
-                        Date = DateTime.Now.AddMonths(3),
-                        Description = "Activity 3 months in future",
-                        Category = "Drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(3)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(3)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 4",
-                        Date = DateTime.Now.AddMonths(4),
-                        Description = "Activity 4 months in future",
-                        Category = "Culture",
-                        City = "London",
-                        Venue = "British Museum",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(4)
-                            }
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 5",
-                        Date = DateTime.Now.AddMonths(5),
-                        Description = "Activity 5 months in future",
-                        Category = "Drinks",
-                        City = "London",
-                        Venue = "Punch and Judy",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(5)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(5)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 6",
-                        Date = DateTime.Now.AddMonths(6),
-                        Description = "Activity 6 months in future",
-                        Category = "Music",
-                        City = "London",
-                        Venue = "O2 Arena",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(6)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(6)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 7",
-                        Date = DateTime.Now.AddMonths(7),
-                        Description = "Activity 7 months in future",
-                        Category = "Travel",
-                        City = "Berlin",
-                        Venue = "All",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(7)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(7)
-                            },
-                        }
-                    },
-                    new Activity
-                    {
-                        Title = "Future Activity 8",
-                        Date = DateTime.Now.AddMonths(8),
-                        Description = "Activity 8 months in future",
-                        Category = "Drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(8)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(8)
-                            },
-                        }
-                    }
-                };
+                string[] roles = new string[] { "Admin", "User", "Chef", "Shop Manager" };
 
-                await context.Activities.AddRangeAsync(activities);
+                foreach (string role in roles)
+                {
+                    var roleStore = new RoleStore<IdentityRole>(context);
+
+                    if (!context.Roles.Any(r => r.Name == role))
+                    {
+                        await roleStore.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+            if (!context.Articles.Any())
+            {
+                var articles = new List<Article>
+                {
+                    new Article
+                    {
+                        Title = "Cá chiên sốt cà",
+                        Date = DateTime.Now.AddMonths(-2),
+                        Description = "Chuẩn bị nguyên liệu: hành, ngò, ..v..v",
+                        Author= "Nguyễn Văn A",
+                        Image = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1586959500/bu0ri90mobbkonaxblk5.jpg",
+                    },
+                    new Article
+                    {
+                        Title = "Canh chua cá lóc",
+                        Date = DateTime.Now.AddMonths(-1),
+                        Description = "Chuẩn bị nguyên liệu: hành, ngò, ..v..v",
+                        Author= "Trần văn B",
+                        Image = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1586970271/fbybitqqlqtvjgnnobzj.jpg",
+                    },
+                    new Article
+                    {
+                        Title = "Cá rô kho tộ",
+                        Date = DateTime.Now.AddMonths(1),
+                        Description = "Chuẩn bị nguyên liệu: hành, ngò, ..v..v",
+                        Author= "Phan thị C",
+                        Image = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1586970286/kzpbbbi8ashc0vynosnh.png",
+
+                    },
+                    new Article
+                    {
+                        Title = "Gà nấu lá é",
+                        Date = DateTime.Now.AddMonths(2),
+                        Description = "Chuẩn bị nguyên liệu: hành, ngò, ..v..v",
+                        Author= "Hello Kitty",
+                        Image = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1586839463/topfejocrjdxyrsnlxcc.jpg",
+                    },
+                };
+                await context.Articles.AddRangeAsync(articles);
                 await context.SaveChangesAsync();
             }
         }

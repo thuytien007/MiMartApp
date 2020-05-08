@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200312103003_UserActivityAdded")]
-    partial class UserActivityAdded
+    [Migration("20200312103003_UserArticleAdded")]
+    partial class UserArticleAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Domain.Activity", b =>
+            modelBuilder.Entity("Domain.Article", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,7 +30,7 @@ namespace Persistence.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
@@ -42,12 +42,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("Domain.AppUser", b =>
@@ -118,12 +115,12 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Domain.UserActivity", b =>
+            modelBuilder.Entity("Domain.UserArticle", b =>
                 {
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ActivityId")
+                    b.Property<Guid>("ArticleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateJoined")
@@ -132,11 +129,11 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsHost")
                         .HasColumnType("bit");
 
-                    b.HasKey("AppUserId", "ActivityId");
+                    b.HasKey("AppUserId", "ArticleId");
 
-                    b.HasIndex("ActivityId");
+                    b.HasIndex("ArticleId");
 
-                    b.ToTable("UserActivities");
+                    b.ToTable("UserArticles");
                 });
 
             modelBuilder.Entity("Domain.Value", b =>
@@ -302,16 +299,16 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Domain.UserActivity", b =>
+            modelBuilder.Entity("Domain.UserArticle", b =>
                 {
-                    b.HasOne("Domain.Activity", "Activity")
-                        .WithMany("UserActivities")
-                        .HasForeignKey("ActivityId")
+                    b.HasOne("Domain.Article", "Article")
+                        .WithMany("UserArticles")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.AppUser", "AppUser")
-                        .WithMany("UserActivities")
+                        .WithMany("UserArticles")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

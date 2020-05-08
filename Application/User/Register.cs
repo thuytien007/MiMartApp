@@ -24,6 +24,8 @@ namespace Application.User
             public string UserName { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
+
+            //đăng ký với photoupload hay string
         }
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -78,7 +80,7 @@ namespace Application.User
                         DisplayName = user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
                         UserName = user.UserName,
-                        Image = user.Photos.FirstOrDefault(x => x.isMain)?.Url
+                        Image = user.Avatar
                     };
                 }
                 else

@@ -40,7 +40,8 @@ namespace Persistence.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    DisplayName = table.Column<string>(nullable: true)
+                    DisplayName = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,16 +234,8 @@ namespace Persistence.Migrations
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Venue",
-                table: "Activities",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
                 name: "Title",
-                table: "Activities",
+                table: "Articles",
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -250,7 +243,7 @@ namespace Persistence.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Description",
-                table: "Activities",
+                table: "Articles",
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -258,14 +251,14 @@ namespace Persistence.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Date",
-                table: "Activities",
+                table: "Articles",
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(DateTime));
 
             migrationBuilder.AlterColumn<string>(
-                name: "City",
-                table: "Activities",
+                name: "Image",
+                table: "Articles",
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -273,7 +266,7 @@ namespace Persistence.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Category",
-                table: "Activities",
+                table: "Articles",
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -281,7 +274,7 @@ namespace Persistence.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Id",
-                table: "Activities",
+                table: "Articles",
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(Guid));

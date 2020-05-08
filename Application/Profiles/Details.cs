@@ -35,7 +35,6 @@ namespace Application.Profiles
                     //img có thể là giá trị null nên có dấu ?
                     Image = user.Photos.FirstOrDefault(x => x.isMain)?.Url,
                     Photos = user.Photos,
-                    Bio = user.Bio
                 };
             }
         }

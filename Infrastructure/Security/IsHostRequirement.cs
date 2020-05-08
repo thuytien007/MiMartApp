@@ -29,12 +29,12 @@ namespace Infrastructure.Security
                 var currentUserName = _httpContextAccessor.HttpContext.User?.Claims?
                     .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-                var activityId = Guid.Parse(_httpContextAccessor.HttpContext.Request.RouteValues.SingleOrDefault(
+                var ArticleId = Guid.Parse(_httpContextAccessor.HttpContext.Request.RouteValues.SingleOrDefault(
                     x => x.Key == "id").Value.ToString());
 
-                var activity = _context.Activities.FindAsync(activityId).Result;
+                var Article = _context.Articles.FindAsync(ArticleId).Result;
 
-                var host = activity.UserActivities.FirstOrDefault(x => x.IsHost);
+                var host = Article.UserArticles.FirstOrDefault(x => x.IsHost);
 
                 if (host?.AppUser?.UserName == currentUserName)
                     context.Succeed(requirement);

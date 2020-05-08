@@ -13,7 +13,7 @@
 		  "                _context = context;",
 		  "            }",
 		  "",
-		  "            public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)",
+		  "            public async Task<List<Article>> Handle(Query request, CancellationToken cancellationToken)",
 		  "            {",
 		  "               //handler logic",
 		  "            }",
