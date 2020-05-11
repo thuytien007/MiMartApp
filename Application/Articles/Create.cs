@@ -50,21 +50,20 @@ namespace Application.Articles
                     Id = request.Id,
                     Title = request.Title,
                     Description = request.Description,
-                    Author= request.Author,
                     Date = request.Date,
                     Image = request.Image,
                 };
                 _context.Articles.Add(Article);
                 
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
-                var attendee = new UserArticle
-                {
-                    AppUser = user,
-                    Article = Article,
-                    IsHost = true,
-                    DateJoined = DateTime.Now
-                };
-                _context.UserArticles.Add(attendee);
+                // var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
+                // var attendee = new UserArticle
+                // {
+                //     AppUser = user,
+                //     Article = Article,
+                //     IsHost = true,
+                //     DateJoined = DateTime.Now
+                // };
+                // _context.UserArticles.Add(attendee);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

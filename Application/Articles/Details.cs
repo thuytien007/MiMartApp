@@ -13,11 +13,11 @@ namespace Application.Articles
 {
     public class Details
     {
-        public class Query : IRequest<ArticleDto>
+        public class Query : IRequest<Article>
         {
             public Guid Id { get; set; }
         }
-        public class Handler : IRequestHandler<Query, ArticleDto>
+        public class Handler : IRequestHandler<Query, Article>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace Application.Articles
                 _context = context;
             }
 
-            public async Task<ArticleDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Article> Handle(Query request, CancellationToken cancellationToken)
             {
                  var Article = await _context.Articles.FindAsync(request.Id);
                 //đây là kiểu Eager Load
@@ -41,8 +41,7 @@ namespace Application.Articles
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Article = "Not Found" });
                 }
-                var ArticleToReturn = _mapper.Map<Article, ArticleDto>(Article);
-                return ArticleToReturn;
+                return Article;
             }
         }
     }

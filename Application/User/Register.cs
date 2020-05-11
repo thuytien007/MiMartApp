@@ -24,8 +24,6 @@ namespace Application.User
             public string UserName { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
-
-            //đăng ký với photoupload hay string
         }
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -69,7 +67,8 @@ namespace Application.User
                 {
                     DisplayName = request.DisplayName,
                     Email = request.Email,
-                    UserName = request.UserName
+                    UserName = request.UserName,
+                    Avatar = null,
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
@@ -80,7 +79,7 @@ namespace Application.User
                         DisplayName = user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
                         UserName = user.UserName,
-                        Image = user.Avatar
+                        Avatar = null,
                     };
                 }
                 else

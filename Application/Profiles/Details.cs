@@ -33,8 +33,8 @@ namespace Application.Profiles
                     DisplayName = user.DisplayName,
                     Username = user.UserName,
                     //img có thể là giá trị null nên có dấu ?
-                    Image = user.Photos.FirstOrDefault(x => x.isMain)?.Url,
-                    Photos = user.Photos,
+                    //Image = user.Photos.FirstOrDefault(x => x.isMain)?.Url,
+                    //Photos = user.Photos,
                 };
             }
         }

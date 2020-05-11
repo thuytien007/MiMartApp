@@ -11,9 +11,9 @@ namespace Application.Articles
 {
     public class List
     {
-        public class Query : IRequest<List<ArticleDto>> { }
+        public class Query : IRequest<List<Article>> { }
         //Handle object xử lý tất cả các bussiness logic
-        public class Handler : IRequestHandler<Query, List<ArticleDto>>
+        public class Handler : IRequestHandler<Query, List<Article>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -24,10 +24,10 @@ namespace Application.Articles
                 _context = context;
             }
 
-            public async Task<List<ArticleDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Article>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var Articles = await _context.Articles.ToListAsync();
-                return _mapper.Map<List<Article>, List<ArticleDto>>(Articles);
+                return Articles;
             }
         }
     }

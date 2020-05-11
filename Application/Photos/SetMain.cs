@@ -35,16 +35,16 @@ namespace Application.Photos
                 var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName ==
                 _userAccessor.GetCurrentUsername());
 
-                var photo = user.Photos.FirstOrDefault(x => x.Id == request.Id);
+                //var photo = user.Photos.FirstOrDefault(x => x.Id == request.Id);
 
-                if(photo == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { Photo = "Not found"});
+                //if(photo == null)
+                    //throw new RestException(HttpStatusCode.NotFound, new { Photo = "Not found"});
                 
                 //tìm b.ảnh đang là main hiện tại gán lại là false
-                var currentMain = user.Photos.FirstOrDefault(x => x.isMain);
-                currentMain.isMain = false;
+                //var currentMain = user.Photos.FirstOrDefault(x => x.isMain);
+                //currentMain.isMain = false;
                 //bức đã chọn gán main lại là true
-                photo.isMain = true;
+               //photo.isMain = true;
                 
                 var success = await _context.SaveChangesAsync() > 0;
 

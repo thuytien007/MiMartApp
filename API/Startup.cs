@@ -67,12 +67,12 @@ namespace API
             indentityBuilder.AddEntityFrameworkStores<DataContext>();
             indentityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
-            services.AddAuthorization(opt =>{
-                opt.AddPolicy("IsArticleHost", policy =>{
-                    policy.Requirements.Add(new IsHostRequirement()); 
-                });
-            });
-            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            // services.AddAuthorization(opt =>{
+            //     opt.AddPolicy("IsArticleHost", policy =>{
+            //         policy.Requirements.Add(new IsHostRequirement()); 
+            //     });
+            // });
+            // services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

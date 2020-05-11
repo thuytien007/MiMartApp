@@ -34,7 +34,7 @@ namespace Application.User
                     DisplayName = user.DisplayName,
                     UserName = user.UserName,
                     Token = _jwtGenerator.CreateToken(user),
-                    Image = user.Avatar
+                    Avatar = user.Avatar
 
                 };
                 //xong qua usercontroller them p.thuc get

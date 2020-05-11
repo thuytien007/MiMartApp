@@ -49,7 +49,6 @@ namespace Application.Articles
                 //câu này (??) có nghĩa user có thể update 1 thuộc tính hoặc update tất cả 
                 Article.Title = request.Title ?? Article.Title;
                 Article.Description = request.Description ?? Article.Description;
-                Article.Author= request.Author?? Article.Author;
                 Article.Date = request.Date ?? Article.Date;
                 Article.Image = request.Image ?? Article.Image;
                 var success = await _context.SaveChangesAsync() > 0;

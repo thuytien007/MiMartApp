@@ -11,7 +11,6 @@ namespace Persistence
         }
         public DbSet<Value> Values { get; set; }
         public DbSet<Article> Articles { get; set; }
-        public DbSet<UserArticle> UserArticles {get; set;}
         public DbSet<Photo> Photos {get; set;}
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,18 +24,19 @@ namespace Persistence
             
             //chổ này để tạo khóa chính cho bảng UserArticle với
             //primary key tạo từ 2 id trong bảng Article và bảng AppUser
-            builder.Entity<UserArticle>(x => x.HasKey(ua =>
-                new {ua.AppUserId, ua.ArticleId}));
+            // builder.Entity<Article>(x => x.HasKey(ua =>
+            //      new {ua.AppUserId, ua.ArticleId}));
 
-            builder.Entity<UserArticle>()
-                .HasOne(u => u.AppUser)//có nhiều AppUser
-                .WithMany(a => a.UserArticles)//1 Article
-                .HasForeignKey(u => u.AppUserId);//thông qua AppUserId
+            builder.Entity<Article>()
+                .HasOne(u => u.AppUser)
+                .WithMany(a => a.Articles);//có nhiều AppUser
+            //     .WithMany(a => a.Articles)//1 Article
+            //     .HasForeignKey(t => t.Author);
 
-            builder.Entity<UserArticle>()
-                .HasOne(a => a.Article)
-                .WithMany(u => u.UserArticles)
-                .HasForeignKey(a => a.ArticleId);
+            // builder.Entity<Photo>()
+            //     .HasOne(a => a.Article)
+            //     .WithMany(u => u.Photos)
+            //     .HasForeignKey(t => t.Article);
         }
     }
 }

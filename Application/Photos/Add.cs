@@ -42,9 +42,9 @@ namespace Application.Photos
                     Id = photoUploadResult.PublicId
                 };
 
-                if(!user.Photos.Any(x => x.isMain))
-                    photo.isMain = true;
-                user.Photos.Add(photo);
+                // if(!user.Photos.Any(x => x.isMain))
+                   // photo.isMain = true;
+                //user.Photos.Add(photo);
 
                 var success = await _context.SaveChangesAsync() > 0;
 
