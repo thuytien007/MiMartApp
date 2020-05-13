@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Application.Photos;
 using Domain;
@@ -19,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/setmain")]
-        public async Task<ActionResult<Unit>> SetMain(string id){
+        public async Task<ActionResult<Unit>> SetMain(Guid id){
             return await Mediator.Send(new SetMain.Command{Id = id});
         }
     }

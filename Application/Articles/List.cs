@@ -16,11 +16,11 @@ namespace Application.Articles
         public class Handler : IRequestHandler<Query, List<Article>>
         {
             private readonly DataContext _context;
-            private readonly IMapper _mapper;
+            //private readonly IMapper _mapper;
 
             public Handler(DataContext context, IMapper mapper)
             {
-                _mapper = mapper;
+                //_mapper = mapper;
                 _context = context;
             }
 

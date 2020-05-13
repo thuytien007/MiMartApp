@@ -15,6 +15,6 @@ namespace Domain
         [JsonIgnore]
         public virtual AppUser AppUser { get; set; }
         //từ khóa virtual để sử dụng proxies - lazy loading
-        //public virtual ICollection<Photo> Photos { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
     }
 }

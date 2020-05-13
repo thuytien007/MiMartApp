@@ -16,7 +16,7 @@ namespace Application.Photos
         public class Command : IRequest
         {
             //ta cần biết user sẽ chọn bức ảnh nào làm bức main nên sẽ có Id b.ảnh đó
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
         public class Handler : IRequestHandler<Command>
         {

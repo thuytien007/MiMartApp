@@ -17,7 +17,7 @@ namespace Application.Articles
             public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
-            public string Author{ get; set; }
+            public AppUser AppUser{ get; set; }
             public DateTime Date { get; set; }
             public string Image { get; set; }
         }
@@ -27,7 +27,7 @@ namespace Application.Articles
             {
                 RuleFor(x => x.Title).NotEmpty();
                 RuleFor(x => x.Description).NotEmpty();
-                RuleFor(x => x.Author).NotEmpty();
+                RuleFor(x => x.AppUser).NotEmpty();
                 RuleFor(x => x.Date).NotEmpty();
                 RuleFor(x => x.Image).NotEmpty();
             }
@@ -45,6 +45,7 @@ namespace Application.Articles
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
                 var Article = new Article
                 {
                     Id = request.Id,
@@ -52,10 +53,10 @@ namespace Application.Articles
                     Description = request.Description,
                     Date = request.Date,
                     Image = request.Image,
+                    AppUser = user,
                 };
                 _context.Articles.Add(Article);
-                
-                // var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
+                 
                 // var attendee = new UserArticle
                 // {
                 //     AppUser = user,
