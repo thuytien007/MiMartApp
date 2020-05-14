@@ -6,17 +6,16 @@ using Application.Errors;
 using Domain;
 using MediatR;
 using Persistence;
-
-namespace Application.Partners
+namespace Application.ProductGroups
 {
-    public class Details
+   public class Details
     {
-        public class Query : IRequest<Partner>
+        public class Query : IRequest<ProductGroup>
         {
             public Guid Id { get; set; }
         }
         //Handler object xử lý tất cả các bussiness logic
-        public class Handler : IRequestHandler<Query, Partner>
+        public class Handler : IRequestHandler<Query, ProductGroup>
         {
             private readonly DataContext _context;
 
@@ -25,21 +24,21 @@ namespace Application.Partners
                 _context = context;
             }
 
-            public async Task<Partner> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ProductGroup> Handle(Query request, CancellationToken cancellationToken)
             {
                 //handler logic
-                var Partner = await _context.Partners.FindAsync(request.Id);
+                var ProductGroup = await _context.ProductGroups.FindAsync(request.Id);
                 //đây là kiểu Eager Load
                 // .Include(x => x.UserArticles)
                 // .ThenInclude(x => x.AppUser)
                 //dùng cái này thì k dùng FindAsync
                 // .SingleOrDefaultAsync(x => x.Id == request.Id);
 
-                if (Partner == null)
+                if (ProductGroup == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { Partner = "Not Found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { ProductGroup = "Not Found" });
                 }
-                return Partner;
+                return ProductGroup;
             }
         }
     }

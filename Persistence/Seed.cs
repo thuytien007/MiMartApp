@@ -213,6 +213,56 @@ namespace Persistence
                 context.Stores.AddRange(store);
                 context.SaveChanges();
             }
+             if (!context.ProductGroups.Any())
+            {
+                var group = new List<ProductGroup>
+                {
+                    new ProductGroup
+                    {
+                        GroupName = "Hải Sản",
+                    },
+                     new ProductGroup
+                    {
+                        GroupName = "Đồ Hộp",
+                    },
+                     new ProductGroup
+                    {
+                        GroupName = "Mì",
+                    }
+                };
+                 context.ProductGroups.AddRange(group);
+                context.SaveChanges();
+            }
+            if (!context.Products.Any())
+            {
+                var product = new List<Product>
+                {
+                    new Product
+                    {
+                        ProductName = "Tôm Sú AG",
+                        CalculationUnit = "kg",
+                        ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477332/tom-su_mnl7ku.jpg",
+                        ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Hải Sản"),
+
+                    },
+                     new Product
+                    {
+                        ProductName = "Mì Hảo Hảo Chua Cay",
+                        CalculationUnit = "gói",
+                        ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477334/mi-hao-hao-chua-cay_h3v7eh.jpg",
+                        ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Mì"),
+                    },
+                     new Product
+                    {
+                        ProductName = "Cá Mòi 3 Cô Gái",
+                        CalculationUnit = "hộp",
+                        ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477333/ca-moi-ba-co-gai_oeirts.jpg",
+                        ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Đồ Hộp"),
+                    }
+                };
+                 context.Products.AddRange(product);
+                context.SaveChanges();
+            }
         }
     }
 }

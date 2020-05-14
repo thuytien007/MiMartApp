@@ -40,7 +40,7 @@ namespace Application.Stores
 
                 if (Store == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { Article = "Not Found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Store = "Not Found" });
                 }
                 return Store;
             }

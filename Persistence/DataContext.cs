@@ -14,6 +14,8 @@ namespace Persistence
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<ProductGroup> ProductGroups { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -37,9 +39,13 @@ namespace Persistence
                 .HasOne(a => a.Article)
                 .WithMany(u => u.Photos);
 
-             builder.Entity<Store>()
-                .HasOne(s => s.Partner)
-                .WithMany(p => p.Stores);
+            builder.Entity<Store>()
+               .HasOne(s => s.Partner)
+               .WithMany(p => p.Stores);
+
+            builder.Entity<Product>()
+               .HasOne(s => s.ProductGroup)
+               .WithMany(p => p.Products);
         }
     }
 }
