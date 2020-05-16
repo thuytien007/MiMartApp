@@ -213,7 +213,7 @@ namespace Persistence
                 context.Stores.AddRange(store);
                 context.SaveChanges();
             }
-             if (!context.ProductGroups.Any())
+            if (!context.ProductGroups.Any())
             {
                 var group = new List<ProductGroup>
                 {
@@ -230,7 +230,7 @@ namespace Persistence
                         GroupName = "Mì",
                     }
                 };
-                 context.ProductGroups.AddRange(group);
+                context.ProductGroups.AddRange(group);
                 context.SaveChanges();
             }
             if (!context.Products.Any())
@@ -241,6 +241,10 @@ namespace Persistence
                     {
                         ProductName = "Tôm Sú AG",
                         CalculationUnit = "kg",
+                        Description = "Tôm sông, tôm tươi thuộc cty thực phẩm AG",
+                        Instructions = "Có thể làm các món nướng, kho tàu, nấu lẩu",
+                        ManufacturingDate = DateTime.Now.AddMonths(-2),
+                        ExpiryDate = DateTime.Now.AddMonths(2),
                         ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477332/tom-su_mnl7ku.jpg",
                         ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Hải Sản"),
 
@@ -249,6 +253,10 @@ namespace Persistence
                     {
                         ProductName = "Mì Hảo Hảo Chua Cay",
                         CalculationUnit = "gói",
+                        Description = "Mì ăn liền vị tôm chua cay của cty CP Hảo Hảo",
+                        Instructions = "Cho mì và gói nêm + dầu vào tô, cho nước sôi vào, đậy nắp 2p, hoặc ăn sống",
+                        ManufacturingDate = DateTime.Now.AddMonths(-1),
+                        ExpiryDate = DateTime.Now.AddMonths(2),
                         ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477334/mi-hao-hao-chua-cay_h3v7eh.jpg",
                         ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Mì"),
                     },
@@ -256,11 +264,15 @@ namespace Persistence
                     {
                         ProductName = "Cá Mòi 3 Cô Gái",
                         CalculationUnit = "hộp",
+                        Description = "Cá mòi đóng hộp của cty CP Choika Thái Lan",
+                        Instructions = "Phi tỏi vào chảo, cho cá mòi vào, nêm nếp gia vị phù hợp..v...v",
+                        ManufacturingDate = DateTime.Now.AddMonths(-3),
+                        ExpiryDate = DateTime.Now.AddMonths(3),
                         ProductImage = "https://res.cloudinary.com/dfnrna9e8/image/upload/v1589477333/ca-moi-ba-co-gai_oeirts.jpg",
                         ProductGroup = context.ProductGroups.Single(r => r.GroupName == "Đồ Hộp"),
                     }
                 };
-                 context.Products.AddRange(product);
+                context.Products.AddRange(product);
                 context.SaveChanges();
             }
         }
