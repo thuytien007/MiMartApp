@@ -16,6 +16,7 @@ namespace Persistence
         public DbSet<Store> Stores { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<StoreDetail> StoreDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -25,11 +26,6 @@ namespace Persistence
                     new Value { Id = 2, Name = "Value 102" },
                     new Value { Id = 3, Name = "Value 103" }
                 );
-
-            //chổ này để tạo khóa chính cho bảng UserArticle với
-            //primary key tạo từ 2 id trong bảng Article và bảng AppUser
-            // builder.Entity<Article>(x => x.HasKey(ua =>
-            //      new {ua.AppUserId, ua.ArticleId}));
 
             builder.Entity<Article>()
                 .HasOne(u => u.AppUser)
@@ -46,6 +42,21 @@ namespace Persistence
             builder.Entity<Product>()
                .HasOne(s => s.ProductGroup)
                .WithMany(p => p.Products);
+
+            //chổ này để tạo khóa chính cho bảng StoreDetail với
+            //primary key tạo từ 2 id trong bảng Product và bảng Store
+            builder.Entity<StoreDetail>(x => x.HasKey(ua =>
+                new {ua.StoreId, ua.ProductId}));
+
+            builder.Entity<StoreDetail>()
+                .HasOne(u => u.Store)
+                .WithMany(a => a.StoreDetails)
+                .HasForeignKey(u => u.StoreId);
+
+            builder.Entity<StoreDetail>()
+                .HasOne(a => a.Product)
+                .WithMany(u => u.StoreDetails)
+                .HasForeignKey(a => a.ProductId);
         }
     }
 }

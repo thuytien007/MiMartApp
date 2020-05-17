@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Domain
 {
     public class Photo
@@ -5,6 +7,7 @@ namespace Domain
         public string Id {get; set;}
         public string Url {get; set;}
         public bool isMain {get; set;}
+        [JsonIgnore]
         public virtual Article Article {get; set;}
     }
 }

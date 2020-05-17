@@ -21,6 +21,7 @@ using FluentValidation.AspNetCore;
 using AutoMapper;
 using Infrastructure.Photos;
 using Application.Photos;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -88,6 +89,13 @@ namespace API
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+
+             services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "API Tien Docs", Version = "v1" });
+                //dòng này dùng để nếu 2 class có cùng namespace nó k bị lỗi schemeId
+                options.CustomSchemaIds(x => x.FullName);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +109,16 @@ namespace API
 
             //app.UseHttpsRedirection();
 
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+            
             app.UseRouting();
             //do add bên service nên add thêm ở đây gọi là middleware
             app.UseCors("CorsPolicy");

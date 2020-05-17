@@ -12,5 +12,6 @@ namespace Domain
         public string Coordinates { get; set; }
         [JsonIgnore]
         public virtual Partner Partner { get; set; }
+        public virtual ICollection<StoreDetail> StoreDetails { get; set; }
     }
 }

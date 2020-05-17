@@ -163,56 +163,6 @@ namespace Persistence
                 context.Partners.AddRange(partner);
                 context.SaveChanges();
             }
-            if (!context.Stores.Any())
-            {
-                var store = new List<Store>
-                {
-                    new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Bách Hóa Xanh"),
-                         District = "Quận 2",
-                         Address = "419 Nguyễn Thị Định, Cát Lái",
-                         Coordinates = "10.777722, 106.768918",
-                    },
-                    new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Bách Hóa Xanh"),
-                         District = "Quận 8",
-                         Address = "117 Âu Dương Lân, Phường 2",
-                         Coordinates = "10.746256, 106.683224",
-                    },
-                     new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Vinmart"),
-                         District = "Quận 7",
-                         Address = "255 Trần Xuân Soạn, Tân Kiểng",
-                         Coordinates = "10.752277, 106.714884",
-                    },
-                    new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Vinmart"),
-                         District = "Quận 10",
-                         Address = "584 Nguyễn Chí Thanh, Phường 7",
-                         Coordinates = "10.759574, 106.659615",
-                    },
-                     new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Co.op Food"),
-                         District = "Quận 8",
-                         Address = "90 218 Cao Lỗ, Phường 4",
-                         Coordinates = "10.736857, 106.677364",
-                    },
-                     new Store
-                    {
-                         Partner = context.Partners.Single(n => n.PartnerName == "Co.op Food"),
-                         District = "Quận 7",
-                         Address = "102 Đường Số 15, Tân Quy",
-                         Coordinates = "10.746713, 106.706773",
-                    }
-                };
-                context.Stores.AddRange(store);
-                context.SaveChanges();
-            }
             if (!context.ProductGroups.Any())
             {
                 var group = new List<ProductGroup>
@@ -273,6 +223,116 @@ namespace Persistence
                     }
                 };
                 context.Products.AddRange(product);
+                context.SaveChanges();
+            }
+            if (!context.Stores.Any())
+            {
+                var store = new List<Store>
+                {
+                    new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Bách Hóa Xanh"),
+                        District = "Quận 2",
+                        Address = "419 Nguyễn Thị Định, Cát Lái",
+                        Coordinates = "10.777722, 106.768918",
+                        StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Mì Hảo Hảo Chua Cay"),
+                                Price = 3000,
+                                InventoryNumber = 1000,
+                            },
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Cá Mòi 3 Cô Gái"),
+                                Price = 15000,
+                                InventoryNumber = 2000,
+                            }
+                        }
+                    },
+                    new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Bách Hóa Xanh"),
+                        District = "Quận 8",
+                        Address = "117 Âu Dương Lân, Phường 2",
+                        Coordinates = "10.746256, 106.683224",
+                        StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Mì Hảo Hảo Chua Cay"),
+                                Price = 3500,
+                                InventoryNumber = 500,
+                            },
+                        }
+                    },
+                     new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Vinmart"),
+                        District = "Quận 7",
+                        Address = "255 Trần Xuân Soạn, Tân Kiểng",
+                        Coordinates = "10.752277, 106.714884",
+                        StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Mì Hảo Hảo Chua Cay"),
+                                Price = 3200,
+                                InventoryNumber = 700,
+                            },
+                        }
+                    },
+                    new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Vinmart"),
+                        District = "Quận 10",
+                        Address = "584 Nguyễn Chí Thanh, Phường 7",
+                        Coordinates = "10.759574, 106.659615",
+                        StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Tôm Sú AG"),
+                                Price = 300000,
+                                InventoryNumber = 50,
+                            },
+                        }
+                    },
+                     new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Co.op Food"),
+                        District = "Quận 8",
+                        Address = "90 218 Cao Lỗ, Phường 4",
+                        Coordinates = "10.736857, 106.677364",
+                        StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Cá Mòi 3 Cô Gái"),
+                                Price = 17000,
+                                InventoryNumber = 800,
+                            },
+                        }
+                    },
+                     new Store
+                    {
+                        Partner = context.Partners.Single(n => n.PartnerName == "Co.op Food"),
+                        District = "Quận 7",
+                        Address = "102 Đường Số 15, Tân Quy",
+                        Coordinates = "10.746713, 106.706773",
+                         StoreDetails = new List<StoreDetail>
+                        {
+                            new StoreDetail
+                            {
+                                Product = context.Products.Single(n => n.ProductName == "Tôm Sú AG"),
+                                Price = 250000,
+                                InventoryNumber = 40,
+                            },
+                        }
+                    }
+                };
+                context.Stores.AddRange(store);
                 context.SaveChanges();
             }
         }

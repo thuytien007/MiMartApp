@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Domain
@@ -14,6 +15,7 @@ namespace Domain
         public DateTime ManufacturingDate { get; set; }
         public DateTime ExpiryDate { get; set; }
         [JsonIgnore]
-        public virtual ProductGroup ProductGroup { get; set; }  
+        public virtual ProductGroup ProductGroup { get; set; }
+        public virtual ICollection<StoreDetail> StoreDetails { get; set; }
     }
 }
