@@ -6,16 +6,16 @@ using Application.Errors;
 using Domain;
 using MediatR;
 using Persistence;
-namespace Application.Stores
+namespace Application.Orders
 {
-     public class Details
+    public class Details
     {
-        public class Query : IRequest<Store>
+        public class Query : IRequest<Order>
         {
             public Guid Id { get; set; }
         }
         //Handler object xử lý tất cả các bussiness logic
-        public class Handler : IRequestHandler<Query, Store>
+        public class Handler : IRequestHandler<Query, Order>
         {
             private readonly DataContext _context;
 
@@ -24,21 +24,21 @@ namespace Application.Stores
                 _context = context;
             }
 
-            public async Task<Store> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Order> Handle(Query request, CancellationToken cancellationToken)
             {
                 //handler logic
-                var Store = await _context.Stores.FindAsync(request.Id);
+                var Order = await _context.Orders.FindAsync(request.Id);
                 //đây là kiểu Eager Load
                 // .Include(x => x.UserArticles)
                 // .ThenInclude(x => x.AppUser)
                 //dùng cái này thì k dùng FindAsync
                 // .SingleOrDefaultAsync(x => x.Id == request.Id);
 
-                if (Store == null)
+                if (Order == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { Store = "Not Found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Order = "Not Found" });
                 }
-                return Store;
+                return Order;
             }
         }
     }

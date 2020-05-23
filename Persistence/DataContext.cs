@@ -17,6 +17,9 @@ namespace Persistence
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<StoreDetail> StoreDetails { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<StatusOrder> StatusOrders { get; set; }
+        public DbSet<OrderHistory> OrderHistories { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -57,6 +60,25 @@ namespace Persistence
                 .HasOne(a => a.Product)
                 .WithMany(u => u.StoreDetails)
                 .HasForeignKey(a => a.ProductId);
+
+            builder.Entity<Order>()
+                .HasOne(u => u.AppUser)
+                .WithMany(a => a.Orders);
+
+            //chổ này để tạo khóa chính cho bảng OrderHistory với
+            //primary key tạo từ 2 id trong bảng Order và bảng StatusOrder
+             builder.Entity<OrderHistory>(x => x.HasKey(ua =>
+                new {ua.OrderId, ua.StatusOrderId}));
+
+            builder.Entity<OrderHistory>()
+                .HasOne(u => u.Order)
+                .WithMany(a => a.OrderHistories)
+                .HasForeignKey(u => u.OrderId);
+
+            builder.Entity<OrderHistory>()
+                .HasOne(a => a.StatusOrder)
+                .WithMany(u => u.OrderHistories)
+                .HasForeignKey(a => a.StatusOrderId);
         }
     }
 }

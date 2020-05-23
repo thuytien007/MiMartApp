@@ -335,6 +335,104 @@ namespace Persistence
                 context.Stores.AddRange(store);
                 context.SaveChanges();
             }
+            if (!context.StatusOrders.Any())
+            {
+                var statusOrder = new List<StatusOrder>
+                {
+                    new StatusOrder
+                    {
+                        Description = "Đặt hàng thành công"
+                    },
+                     new StatusOrder
+                    {
+                        Description = "Đang soạn hàng"
+                    },
+                     new StatusOrder
+                    {
+                        Description = "Đang giao hàng"
+                    },
+                     new StatusOrder
+                    {
+                        Description = "Giao hàng thành công"
+                    },
+                     new StatusOrder
+                    {
+                        Description = "Đơn hàng bị hủy"
+                    }
+                };
+                context.StatusOrders.AddRange(statusOrder);
+                context.SaveChanges();
+            }
+            if (!context.Orders.Any())
+            {
+                var order = new List<Order>
+                {
+                    new Order
+                    {
+                        DateOfOrder = new DateTime(2020, 03, 01, 09, 30, 20),
+                        Total = 300000,
+                        AppUser = context.Users.Single(e => e.Email == "jane@test.com"),
+                        OrderHistories = new List<OrderHistory>
+                        {
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 03, 01, 09, 30, 20),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đặt hàng thành công"),
+                            },
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 03, 01, 10, 00, 05),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đang soạn hàng"),
+                            },
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 03, 01, 10, 30, 05),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đang giao hàng"),
+                            },
+                             new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 03, 01, 10, 50, 05),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Giao hàng thành công"),
+                            },
+                        }
+                    },
+                    new Order
+                    {
+                        DateOfOrder = new DateTime(2020, 04, 01, 09, 30, 20),
+                        Total = 500000,
+                        AppUser = context.Users.Single(e => e.Email == "jane@test.com"),
+                        OrderHistories = new List<OrderHistory>
+                        {
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 04, 01, 09, 30, 20),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đặt hàng thành công"),
+                            },
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 04, 01, 10, 00, 05),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đơn hàng bị hủy"),
+                            },
+                        }
+                    },
+                    new Order
+                    {
+                        DateOfOrder = new DateTime(2020, 05, 24, 09, 30, 20),
+                        Total = 1000000,
+                        AppUser = context.Users.Single(e => e.Email == "bob@test.com"),
+                        OrderHistories = new List<OrderHistory>
+                        {
+                            new OrderHistory
+                            {
+                                DateOfStatusOrder = new DateTime(2020, 05, 24, 09, 30, 20),
+                                StatusOrder = context.StatusOrders.Single(m => m.Description == "Đặt hàng thành công"),
+                            },
+                        }
+                    },
+                };
+                context.Orders.AddRange(order);
+                context.SaveChanges();
+            }
         }
     }
 }

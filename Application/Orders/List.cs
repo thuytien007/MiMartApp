@@ -5,13 +5,13 @@ using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-namespace Application.Stores
+namespace Application.Orders
 {
-   public class List
+    public class List
     {
-        public class Query : IRequest<List<Store>> { }
+        public class Query : IRequest<List<Order>> { }
         //Handler object xử lý tất cả các bussiness logic
-        public class Handler : IRequestHandler<Query, List<Store>>
+        public class Handler : IRequestHandler<Query, List<Order>>
         {
             private readonly DataContext _context;
 
@@ -20,11 +20,11 @@ namespace Application.Stores
                 _context = context;
             }
 
-            public async Task<List<Store>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Order>> Handle(Query request, CancellationToken cancellationToken)
             {
                 //handler logic
-                var Stores = await _context.Stores.ToListAsync();
-                return Stores;
+                var Orders = await _context.Orders.ToListAsync();
+                return Orders;
             }
         }
     }
