@@ -12,5 +12,6 @@ namespace Domain
         [JsonIgnore]
         public virtual AppUser AppUser { get; set; }
         public virtual ICollection<OrderHistory> OrderHistories {get; set;}
+        public virtual ICollection<OrderDetail> OrderDetails {get; set;}
     }
 }

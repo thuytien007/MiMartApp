@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Domain
@@ -13,5 +14,6 @@ namespace Domain
         public virtual Store Store { get; set; }
         [JsonIgnore]
         public virtual Product Product { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

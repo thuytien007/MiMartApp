@@ -19,11 +19,11 @@ namespace API.Controllers
         {
             return await Mediator.Send(new List.Query());
         }
-        //[AllowAnonymous]
+        [AllowAnonymous]
         //thêm Authorize ở đây có nghĩ pthuc get theo id này k dc phép truy cập
         //phải là authorize và có token mới vô dc
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<Article>> Details(Guid id)
         {
             return await Mediator.Send(new Details.Query { Id = id });

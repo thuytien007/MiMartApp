@@ -20,6 +20,7 @@ namespace Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<StatusOrder> StatusOrders { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -67,7 +68,7 @@ namespace Persistence
 
             //chổ này để tạo khóa chính cho bảng OrderHistory với
             //primary key tạo từ 2 id trong bảng Order và bảng StatusOrder
-             builder.Entity<OrderHistory>(x => x.HasKey(ua =>
+            builder.Entity<OrderHistory>(x => x.HasKey(ua =>
                 new {ua.OrderId, ua.StatusOrderId}));
 
             builder.Entity<OrderHistory>()
@@ -79,6 +80,20 @@ namespace Persistence
                 .HasOne(a => a.StatusOrder)
                 .WithMany(u => u.OrderHistories)
                 .HasForeignKey(a => a.StatusOrderId);
+
+            //định khóa cho chi tiết hóa đơn OrderDetail
+            builder.Entity<OrderDetail>(x => x.HasKey(ua =>
+                new {ua.OrderId, ua.ProductId, ua.StoreId}));
+
+            builder.Entity<OrderDetail>()
+                .HasOne(u => u.Order)
+                .WithMany(a => a.OrderDetails)
+                .HasForeignKey(u => u.OrderId);
+
+            builder.Entity<OrderDetail>()
+                .HasOne(a => a.StoreDetails)
+                .WithMany(u => u.OrderDetails)
+                .HasForeignKey(u => new{u.ProductId, u.StoreId});
         }
     }
 }
