@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -17,9 +18,10 @@ namespace Application.Articles
             public Guid Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
-            public AppUser AppUser{ get; set; }
+            public AppUser AppUser { get; set; }
             public DateTime Date { get; set; }
             public string Image { get; set; }
+            public IFormFile File { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -27,24 +29,26 @@ namespace Application.Articles
             {
                 RuleFor(x => x.Title).NotEmpty();
                 RuleFor(x => x.Description).NotEmpty();
-                RuleFor(x => x.AppUser).NotEmpty();
                 RuleFor(x => x.Date).NotEmpty();
-                RuleFor(x => x.Image).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
+            private readonly IPhotoAccessor _photoAccessor;
 
-            public Handler(DataContext context, IUserAccessor userAccessor)
+            public Handler(DataContext context, IUserAccessor userAccessor, IPhotoAccessor photoAccessor)
             {
+                _photoAccessor = photoAccessor;
                 _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
+                
+                var photoUploadResult = _photoAccessor.AddPhoto(request.File);
                 var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
                 var Article = new Article
                 {
@@ -52,11 +56,11 @@ namespace Application.Articles
                     Title = request.Title,
                     Description = request.Description,
                     Date = request.Date,
-                    Image = request.Image,
+                    Image = photoUploadResult.Url,
                     AppUser = user,
                 };
                 _context.Articles.Add(Article);
-                 
+
                 // var attendee = new UserArticle
                 // {
                 //     AppUser = user,

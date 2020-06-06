@@ -17,7 +17,7 @@ namespace Application.Partners
             public Guid Id { get; set; }
             public string PartnerName { get; set; }
             public string Logo { get; set; }
-             public IFormFile File { get; set; }
+            public IFormFile File { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {

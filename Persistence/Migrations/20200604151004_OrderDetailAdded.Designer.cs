@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200511031318_ArticleAdded")]
-    partial class ArticleAdded
+    [Migration("20200604151004_OrderDetailAdded")]
+    partial class OrderDetailAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,10 +120,103 @@ namespace Persistence.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("Domain.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateOfOrder")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Domain.OrderDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CurrentPrice")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("SelectedNumber")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId", "StoreId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Domain.OrderHistory", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StatusOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateOfStatusOrder")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrderId", "StatusOrderId");
+
+                    b.HasIndex("StatusOrderId");
+
+                    b.ToTable("OrderHistories");
+                });
+
+            modelBuilder.Entity("Domain.Partner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartnerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Partners");
+                });
+
             modelBuilder.Entity("Domain.Photo", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -133,7 +226,120 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ArticleId");
+
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("Domain.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CalculationUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Instructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ManufacturingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ProductGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductGroupId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Domain.ProductGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductGroups");
+                });
+
+            modelBuilder.Entity("Domain.StatusOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusOrders");
+                });
+
+            modelBuilder.Entity("Domain.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Coordinates")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PartnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartnerId");
+
+                    b.ToTable("Stores");
+                });
+
+            modelBuilder.Entity("Domain.StoreDetail", b =>
+                {
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("InventoryNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("StoreId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StoreDetails");
                 });
 
             modelBuilder.Entity("Domain.Value", b =>
@@ -304,6 +510,80 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.AppUser", "AppUser")
                         .WithMany("Articles")
                         .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("Domain.Order", b =>
+                {
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("Orders")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("Domain.OrderDetail", b =>
+                {
+                    b.HasOne("Domain.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.StoreDetail", "StoreDetails")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId", "StoreId")
+                        .HasConstraintName("ForeignKey_OrderDtails_StoreDetails")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.OrderHistory", b =>
+                {
+                    b.HasOne("Domain.Order", "Order")
+                        .WithMany("OrderHistories")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.StatusOrder", "StatusOrder")
+                        .WithMany("OrderHistories")
+                        .HasForeignKey("StatusOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Photo", b =>
+                {
+                    b.HasOne("Domain.Article", "Article")
+                        .WithMany("Photos")
+                        .HasForeignKey("ArticleId");
+                });
+
+            modelBuilder.Entity("Domain.Product", b =>
+                {
+                    b.HasOne("Domain.ProductGroup", "ProductGroup")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductGroupId");
+                });
+
+            modelBuilder.Entity("Domain.Store", b =>
+                {
+                    b.HasOne("Domain.Partner", "Partner")
+                        .WithMany("Stores")
+                        .HasForeignKey("PartnerId");
+                });
+
+            modelBuilder.Entity("Domain.StoreDetail", b =>
+                {
+                    b.HasOne("Domain.Product", "Product")
+                        .WithMany("StoreDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Store", "Store")
+                        .WithMany("StoreDetails")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

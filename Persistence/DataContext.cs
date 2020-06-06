@@ -81,9 +81,11 @@ namespace Persistence
                 .WithMany(u => u.OrderHistories)
                 .HasForeignKey(a => a.StatusOrderId);
 
-            //định khóa cho chi tiết hóa đơn OrderDetail
+            //định khóa cho chi tiết hóa đơn OrderDetail 3 thuộc tính là khóa
+            // builder.Entity<OrderDetail>(x => x.HasKey(ua =>
+            //     new {ua.OrderId, ua.ProductId, ua.StoreId}));
             builder.Entity<OrderDetail>(x => x.HasKey(ua =>
-                new {ua.OrderId, ua.ProductId, ua.StoreId}));
+                 new {ua.Id}));
 
             builder.Entity<OrderDetail>()
                 .HasOne(u => u.Order)
@@ -93,7 +95,9 @@ namespace Persistence
             builder.Entity<OrderDetail>()
                 .HasOne(a => a.StoreDetails)
                 .WithMany(u => u.OrderDetails)
-                .HasForeignKey(u => new{u.ProductId, u.StoreId});
+                .HasForeignKey(u => new{u.ProductId, u.StoreId})
+                //đặt tên cho foreign key
+                .HasConstraintName("ForeignKey_OrderDtails_StoreDetails");
         }
     }
 }

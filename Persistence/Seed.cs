@@ -363,6 +363,8 @@ namespace Persistence
                 context.StatusOrders.AddRange(statusOrder);
                 context.SaveChanges();
             }
+            DateTime temp = new DateTime(2020, 04, 01);
+            DateTime temp2 = new DateTime(2020, 05, 24);
             if (!context.Orders.Any())
             {
                 var order = new List<Order>
@@ -370,8 +372,27 @@ namespace Persistence
                     new Order
                     {
                         DateOfOrder = new DateTime(2020, 03, 01, 09, 30, 20),
-                        Total = 300000,
+                        Total = 156000,
                         AppUser = context.Users.Single(e => e.Email == "jane@test.com"),
+                        OrderDetails = new List<OrderDetail>
+                        {
+                            new OrderDetail
+                            {
+                                StoreId = context.StoreDetails.FirstOrDefault().StoreId,
+                                ProductId = context.StoreDetails.FirstOrDefault().ProductId,
+                                CurrentPrice = context.StoreDetails.FirstOrDefault().Price,
+                                SelectedNumber = 2,
+                                Total = 6000,
+                            },
+                             new OrderDetail
+                            {
+                                StoreId = context.StoreDetails.FirstOrDefault().StoreId,
+                                ProductId = context.StoreDetails.Single(g =>g.Price == 15000).ProductId,
+                                CurrentPrice = context.StoreDetails.Single(g =>g.Price == 15000).Price,
+                                SelectedNumber = 10,
+                                Total = 150000,
+                            },
+                        },
                         OrderHistories = new List<OrderHistory>
                         {
                             new OrderHistory
@@ -399,8 +420,20 @@ namespace Persistence
                     new Order
                     {
                         DateOfOrder = new DateTime(2020, 04, 01, 09, 30, 20),
-                        Total = 500000,
+                        Total = 450000,
                         AppUser = context.Users.Single(e => e.Email == "jane@test.com"),
+                        // OrderDetails = new List<OrderDetail>
+                        // {
+                        //     new OrderDetail
+                        //     {
+                        //         //hóa đơn mua tôm sú ở Vinmart q10, đã hủy đơn hàng
+                        //         StoreId = context.StoreDetails.Single(g =>g.Price == 300000).StoreId,
+                        //         ProductId = context.StoreDetails.Single(g =>g.Price == 300000).ProductId,
+                        //         CurrentPrice = context.StoreDetails.Single(g =>g.Price == 300000).Price,
+                        //         SelectedNumber = 1.5,
+                        //         Total = 450000,
+                        //     }
+                        // },
                         OrderHistories = new List<OrderHistory>
                         {
                             new OrderHistory
@@ -418,8 +451,30 @@ namespace Persistence
                     new Order
                     {
                         DateOfOrder = new DateTime(2020, 05, 24, 09, 30, 20),
-                        Total = 1000000,
+                        Total = 50000,
                         AppUser = context.Users.Single(e => e.Email == "bob@test.com"),
+                        // OrderDetails = new List<OrderDetail>
+                        // {
+                        //     //test hóa đơn mua ở 2 cửa hàng khác nhau, có mã HD trùng nhau, HD vừa mới đặt thành công
+                        //     new OrderDetail
+                        //     {
+                        //         //mua mì hảo hảo chua cay ở Vinmart q7
+                        //         StoreId = context.StoreDetails.Single(g =>g.Price == 3200).StoreId,
+                        //         ProductId = context.StoreDetails.Single(g =>g.Price == 3200).ProductId,
+                        //         CurrentPrice = context.StoreDetails.Single(g =>g.Price == 3200).Price,
+                        //         SelectedNumber = 5,
+                        //         Total = 16000,
+                        //     },
+                        //     new OrderDetail
+                        //     {
+                        //         //mua cá mòi ở Coopmart q8
+                        //         StoreId = context.StoreDetails.Single(g =>g.Price == 17000).StoreId,
+                        //         ProductId = context.StoreDetails.Single(g =>g.Price == 17000).ProductId,
+                        //         CurrentPrice = context.StoreDetails.Single(g =>g.Price == 17000).Price,
+                        //         SelectedNumber = 2,
+                        //         Total = 34000,
+                        //     }
+                        // },            
                         OrderHistories = new List<OrderHistory>
                         {
                             new OrderHistory
@@ -433,6 +488,64 @@ namespace Persistence
                 context.Orders.AddRange(order);
                 context.SaveChanges();
             }
+
+            // if (!context.OrderDetails.Any())
+            // {
+            //     var orderDetail = new List<OrderDetail>
+            //     {
+            //         new OrderDetail
+            //         {
+            //             OrderId = context.Orders.FirstOrDefault().Id,
+            //             StoreId = context.StoreDetails.FirstOrDefault().StoreId,
+            //             ProductId = context.StoreDetails.FirstOrDefault().ProductId,
+            //             CurrentPrice = context.StoreDetails.FirstOrDefault().Price,
+            //             SelectedNumber = 2,
+            //             Total = 6000,
+            //         },
+            //         new OrderDetail
+            //         {
+            //             OrderId = context.Orders.FirstOrDefault().Id,
+            //             StoreId = context.StoreDetails.FirstOrDefault().StoreId,
+            //             ProductId = context.StoreDetails.Single(g =>g.Price == 15000).ProductId,
+            //             CurrentPrice = context.StoreDetails.Single(g =>g.Price == 15000).Price,
+            //             SelectedNumber = 10,
+            //             Total = 150000,
+            //         },
+            //          new OrderDetail
+            //         {
+            //             OrderId = context.Orders.Single(d =>d.DateOfOrder.Date.CompareTo(temp.Date)==0).Id,
+            //             //hóa đơn mua tôm sú ở Vinmart q10, đã hủy đơn hàng
+            //             StoreId = context.StoreDetails.Single(g =>g.Price == 300000).StoreId,
+            //             ProductId = context.StoreDetails.Single(g =>g.Price == 300000).ProductId,
+            //             CurrentPrice = context.StoreDetails.Single(g =>g.Price == 300000).Price,
+            //             SelectedNumber = 1.5,
+            //             Total = 450000,
+            //         },
+            //         //test hóa đơn mua ở 2 cửa hàng khác nhau, có mã HD trùng nhau, HD vừa mới đặt thành công
+            //          new OrderDetail
+            //         {
+            //             OrderId = context.Orders.Single(d =>d.DateOfOrder.Date.CompareTo(temp2.Date)==0).Id,
+            //             //mua mì hảo hảo chua cay ở Vinmart q7
+            //             StoreId = context.StoreDetails.Single(g =>g.Price == 3200).StoreId,
+            //             ProductId = context.StoreDetails.Single(g =>g.Price == 3200).ProductId,
+            //             CurrentPrice = context.StoreDetails.Single(g =>g.Price == 3200).Price,
+            //             SelectedNumber = 5,
+            //             Total = 16000,
+            //         },
+            //           new OrderDetail
+            //         {
+            //             OrderId = context.Orders.Single(d =>d.DateOfOrder.Date.CompareTo(temp2.Date)==0).Id,
+            //             //mua cá mòi ở Coopmart q8
+            //             StoreId = context.StoreDetails.Single(g =>g.Price == 17000).StoreId,
+            //             ProductId = context.StoreDetails.Single(g =>g.Price == 17000).ProductId,
+            //             CurrentPrice = context.StoreDetails.Single(g =>g.Price == 17000).Price,
+            //             SelectedNumber = 2,
+            //             Total = 34000,
+            //         },
+            //     };
+            //     context.OrderDetails.AddRange(orderDetail);
+            //     context.SaveChanges();
+            // }
         }
     }
 }

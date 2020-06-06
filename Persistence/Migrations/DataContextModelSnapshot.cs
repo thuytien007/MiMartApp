@@ -142,25 +142,31 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.OrderDetail", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CurrentPrice")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("SelectedNumber")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("StoreId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CurrentPrice")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SelectedNumber")
-                        .HasColumnType("int");
 
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId", "StoreId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId", "StoreId");
 
@@ -522,6 +528,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.StoreDetail", "StoreDetails")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId", "StoreId")
+                        .HasConstraintName("ForeignKey_OrderDtails_StoreDetails")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
