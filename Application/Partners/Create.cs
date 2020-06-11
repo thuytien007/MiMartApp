@@ -24,7 +24,6 @@ namespace Application.Partners
             public CommandValidator()
             {
                 RuleFor(x => x.PartnerName).NotEmpty();
-                RuleFor(x => x.Logo).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>

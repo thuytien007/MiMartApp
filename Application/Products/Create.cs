@@ -6,6 +6,7 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 namespace Application.Products
 {
@@ -21,6 +22,7 @@ namespace Application.Products
             public string Instructions { get; set; }
             public DateTime ManufacturingDate { get; set; }
             public DateTime ExpiryDate { get; set; }
+            public string ProductGroup {get; set; }
             public IFormFile File { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
@@ -33,6 +35,7 @@ namespace Application.Products
                 RuleFor(x => x.Instructions).NotEmpty();
                 RuleFor(x => x.ManufacturingDate).NotEmpty();
                 RuleFor(x => x.ExpiryDate).NotEmpty();
+                RuleFor(x => x.ProductGroup).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>
@@ -49,6 +52,7 @@ namespace Application.Products
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var photoUploadResult = _photoAccessor.AddPhoto(request.File);
+                var productGroupId = await _context.ProductGroups.SingleOrDefaultAsync(n =>n.GroupName==request.ProductGroup);
                 var product = new Product
                 {
                     Id = request.Id,
@@ -59,6 +63,7 @@ namespace Application.Products
                     ManufacturingDate = request.ManufacturingDate,
                     ExpiryDate = request.ExpiryDate,
                     ProductImage = photoUploadResult.Url,
+                    ProductGroup = productGroupId
                 };
                 _context.Products.Add(product);
 

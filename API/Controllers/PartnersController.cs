@@ -26,13 +26,13 @@ namespace API.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<Unit>> Create(Create.Command command)
+        public async Task<ActionResult<Unit>> Create([FromForm]Create.Command command)
         {
             return await Mediator.Send(command);
         }
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
+        public async Task<ActionResult<Unit>> Edit(Guid id, [FromForm]Edit.Command command)
         {
             command.Id = id;
             return await Mediator.Send(command);

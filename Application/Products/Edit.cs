@@ -8,6 +8,7 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 namespace Application.Products
 {
@@ -23,6 +24,7 @@ namespace Application.Products
             public string Instructions { get; set; }
             public DateTime? ManufacturingDate { get; set; }
             public DateTime? ExpiryDate { get; set; }
+            public string ProductGroup { get; set; }
             public IFormFile File { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
@@ -35,6 +37,7 @@ namespace Application.Products
                 RuleFor(x => x.Instructions).NotEmpty();
                 RuleFor(x => x.ManufacturingDate).NotEmpty();
                 RuleFor(x => x.ExpiryDate).NotEmpty();
+                RuleFor(x => x.ProductGroup).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>
@@ -51,6 +54,9 @@ namespace Application.Products
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var Product = await _context.Products.FindAsync(request.Id);
+
+                var productGroupId = await _context.ProductGroups.SingleOrDefaultAsync(n => n.GroupName == request.ProductGroup);
+
                 if (Product == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Product = "Not Found" });
@@ -63,7 +69,17 @@ namespace Application.Products
                 Product.Instructions = request.Instructions ?? Product.Instructions;
                 Product.ManufacturingDate = request.ManufacturingDate ?? Product.ManufacturingDate;
                 Product.ExpiryDate = request.ExpiryDate ?? Product.ExpiryDate;
-                if (photoUploadResult == null)
+                 //set nhóm sản phẩm
+                if (request.ProductGroup == null)
+                {
+                    Product.ProductGroup = Product.ProductGroup;
+                }
+                else
+                {
+                    Product.ProductGroup = productGroupId;
+                }
+                
+                if (request.ProductImage == null)
                 {
                     Product.ProductImage = Product.ProductImage;
                 }
@@ -71,7 +87,7 @@ namespace Application.Products
                 {
                     Product.ProductImage = photoUploadResult.Url;
                 }
-
+               
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success)

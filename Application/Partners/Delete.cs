@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Errors;
+using Application.Interfaces;
 using MediatR;
 using Persistence;
 namespace Application.Partners
@@ -16,9 +17,11 @@ namespace Application.Partners
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
+            private readonly IPhotoAccessor _photoAccessor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IPhotoAccessor photoAccessor)
             {
+                _photoAccessor = photoAccessor;
                 _context = context;
             }
 
@@ -27,9 +30,17 @@ namespace Application.Partners
                 var Partner = await _context.Partners.FindAsync(request.Id);
                 if (Partner == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new{Article = "Not Found"});
+                    throw new RestException(HttpStatusCode.NotFound, new { Article = "Not Found" });
                 }
-                _context.Partners.Remove(Partner);
+                //chưa xóa dc photo trên cloud
+                //_photoAccessor.DeletePhoto(Partner.Logo);
+                var result = _context.Stores.FindAsync(Partner.Id);
+                if(result != null)
+                {
+                     throw new RestException(HttpStatusCode.Conflict, new { Article = "Cannot delete, because it already exited in other table" });
+                }
+                _context.Partners.Remove(Partner); 
+
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success) return Unit.Value;

@@ -29,6 +29,13 @@ namespace Application.ProductGroups
                 {
                     throw new RestException(HttpStatusCode.NotFound, new{ProductGroup = "Not Found"});
                 }
+
+                // var result = _context.Products.FindAsync(request.Id);
+                // if(result != null)
+                // {
+                //      throw new RestException(HttpStatusCode.Conflict, new { ProductGroup = "Cannot delete, because it already exited in other table" });
+                // }
+
                 _context.ProductGroups.Remove(ProductGroup);
                 var success = await _context.SaveChangesAsync() > 0;
 

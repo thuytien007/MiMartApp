@@ -29,9 +29,7 @@ namespace Application.Articles
             {
                 RuleFor(x => x.Title).NotEmpty();
                 RuleFor(x => x.Description).NotEmpty();
-                RuleFor(x => x.Author).NotEmpty();
                 RuleFor(x => x.Date).NotEmpty();
-                RuleFor(x => x.Image).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>
@@ -65,7 +63,8 @@ namespace Application.Articles
                 {
                     Article.Image = photoUploadResult.Url;
                 }
-                Article.Image = request.Image ?? Article.Image;
+                //Article.Image = request.Image ?? Article.Image;
+                //xử lý thêm xóa ảnh đó trên cloud
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success)

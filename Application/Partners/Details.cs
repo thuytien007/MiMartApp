@@ -34,7 +34,7 @@ namespace Application.Partners
                 // .ThenInclude(x => x.AppUser)
                 //dùng cái này thì k dùng FindAsync
                 // .SingleOrDefaultAsync(x => x.Id == request.Id);
-
+                
                 if (Partner == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Partner = "Not Found" });

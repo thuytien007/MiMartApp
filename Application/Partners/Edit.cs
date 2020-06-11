@@ -26,7 +26,6 @@ namespace Application.Partners
             public CommandValidator()
             {
                 RuleFor(x => x.PartnerName).NotEmpty();
-                RuleFor(x => x.Logo).NotEmpty();
             }
         }
         public class Handler : IRequestHandler<Command>
@@ -50,6 +49,7 @@ namespace Application.Partners
                 var photoUploadResult = _photoAccessor.AddPhoto(request.File);
                 //câu này (??) có nghĩa user có thể update 1 thuộc tính hoặc update tất cả 
                 Partner.PartnerName = request.PartnerName ?? Partner.PartnerName;
+                //Partner.Logo = request.Logo ?? Partner.Logo;
                 if (photoUploadResult == null)
                 {
                     Partner.Logo = Partner.Logo;
