@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
+//chức năng profile này để dành tham khảo, không có trong ứng dụng mimart
 namespace Application.Profiles
 {
     public class Details

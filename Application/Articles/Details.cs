@@ -22,7 +22,7 @@ namespace Application.Articles
             private readonly DataContext _context;
             //private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context)
             {
                 //_mapper = mapper;
                 _context = context;
@@ -30,7 +30,7 @@ namespace Application.Articles
 
             public async Task<Article> Handle(Query request, CancellationToken cancellationToken)
             {
-                 var Article = await _context.Articles.FindAsync(request.Id);
+                var Article = await _context.Articles.FindAsync(request.Id);
                 //đây là kiểu Eager Load
                 // .Include(x => x.UserArticles)
                 // .ThenInclude(x => x.AppUser)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200611084840_ChangOrderDetail")]
+    partial class ChangOrderDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,7 +170,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("StoreId", "ProductId");
+                    b.HasIndex("ProductId", "StoreId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -527,7 +529,7 @@ namespace Persistence.Migrations
 
                     b.HasOne("Domain.StoreDetail", "StoreDetails")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("StoreId", "ProductId")
+                        .HasForeignKey("ProductId", "StoreId")
                         .HasConstraintName("FK_OrderDetails_StoreDetails")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

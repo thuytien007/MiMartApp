@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Domain;
 
+//chức năng profile này để dành tham khảo, không có trong ứng dụng mimart
 namespace Application.Profiles
 {
     public class Profile

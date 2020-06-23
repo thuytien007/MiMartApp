@@ -46,16 +46,16 @@ namespace Application.Partners
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Article = "Not Found" });
                 }
-                var photoUploadResult = _photoAccessor.AddPhoto(request.File);
+                
                 //câu này (??) có nghĩa user có thể update 1 thuộc tính hoặc update tất cả 
                 Partner.PartnerName = request.PartnerName ?? Partner.PartnerName;
-                //Partner.Logo = request.Logo ?? Partner.Logo;
-                if (photoUploadResult == null)
+                if (request.File == null)
                 {
                     Partner.Logo = Partner.Logo;
                 }
                 else
                 {
+                    var photoUploadResult = _photoAccessor.AddPhoto(request.File);
                     Partner.Logo = photoUploadResult.Url;
                 }
 

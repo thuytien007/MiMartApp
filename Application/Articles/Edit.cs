@@ -46,7 +46,7 @@ namespace Application.Articles
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var Article = await _context.Articles.FindAsync(request.Id);
-                var photoUploadResult = _photoAccessor.AddPhoto(request.File);
+                
                 if (Article == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Article = "Not Found" });
@@ -55,16 +55,16 @@ namespace Application.Articles
                 Article.Title = request.Title ?? Article.Title;
                 Article.Description = request.Description ?? Article.Description;
                 Article.Date = request.Date ?? Article.Date;
-                if (photoUploadResult == null)
+                if (request.File == null)
                 {
                     Article.Image = Article.Image;
                 }
                 else
                 {
+                    var photoUploadResult = _photoAccessor.AddPhoto(request.File);
                     Article.Image = photoUploadResult.Url;
                 }
-                //Article.Image = request.Image ?? Article.Image;
-                //xử lý thêm xóa ảnh đó trên cloud
+
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success)

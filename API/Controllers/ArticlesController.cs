@@ -5,6 +5,7 @@ using Application.Articles;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,6 +15,7 @@ namespace API.Controllers
     {
         //lấy hết những gì có trong bảng Article
         [HttpGet]
+        //[EnableCors("AllowOrigin")]
         [AllowAnonymous]
         public async Task<ActionResult<List<Article>>> List()
         {

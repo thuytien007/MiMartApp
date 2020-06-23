@@ -61,7 +61,7 @@ namespace Application.Products
                 {
                     throw new RestException(HttpStatusCode.NotFound, new { Product = "Not Found" });
                 }
-                var photoUploadResult = _photoAccessor.AddPhoto(request.File);
+                
                 //câu này (??) có nghĩa user có thể update 1 thuộc tính hoặc update tất cả 
                 Product.ProductName = request.ProductName ?? Product.ProductName;
                 Product.CalculationUnit = request.CalculationUnit ?? Product.CalculationUnit;
@@ -69,22 +69,15 @@ namespace Application.Products
                 Product.Instructions = request.Instructions ?? Product.Instructions;
                 Product.ManufacturingDate = request.ManufacturingDate ?? Product.ManufacturingDate;
                 Product.ExpiryDate = request.ExpiryDate ?? Product.ExpiryDate;
-                 //set nhóm sản phẩm
-                if (request.ProductGroup == null)
-                {
-                    Product.ProductGroup = Product.ProductGroup;
-                }
-                else
-                {
-                    Product.ProductGroup = productGroupId;
-                }
+                Product.ProductGroup = productGroupId ?? Product.ProductGroup;
                 
-                if (request.ProductImage == null)
+                if (request.File == null)
                 {
                     Product.ProductImage = Product.ProductImage;
                 }
                 else
                 {
+                    var photoUploadResult = _photoAccessor.AddPhoto(request.File);
                     Product.ProductImage = photoUploadResult.Url;
                 }
                
