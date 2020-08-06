@@ -2,7 +2,7 @@
 ---
 
 Tech stack:
-- Backend: C# - Framework .Net
+- Backend: C# - Framework .Net Core
 - Frontend: ReactJs
 - Database: SQL Server
 
